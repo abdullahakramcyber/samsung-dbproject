@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samsung Mobile Compare</title>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #4285f4;
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Sections */
+        .section {
+            padding: 6rem 2rem 4rem;
+            min-height: 100vh;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            color: #666;
+        }
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .phone-card {
+            background: var(--white);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .phone-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .phone-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .phone-info {
+            padding: 1.5rem;
+        }
+
+        .phone-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .phone-price {
+            color: var(--secondary-color);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .specs-list {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .specs-list li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Compare Section */
+        .compare-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .phone-selector {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .phone-selector select {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table th {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        /* Forms */
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        /* Cart */
+        .cart-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: var(--white);
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            margin-right: 1rem;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-total {
+            text-align: right;
+            padding: 1rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        /* Buttons */
+        .cta-button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .text-center {
+            background-color: #043472;
+            text-align: center;
+            color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Account Side Panel -->
+    <div id="accountPanel" style="position:fixed;top:0;right:-300px;width:300px;height:100%;background:#fff;box-shadow:-2px 0 5px rgba(0,0,0,0.2);transition:right 0.3s ease;padding:20px;z-index:2000;">
+      <div class="panel-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <span style="font-size:1.2rem;font-weight:700;color:#1a73e8;">Account</span>
+        <button id="closeAccount" style="font-size:1.5rem;cursor:pointer;color:#1a73e8;border:none;background:none;">&times;</button>
+      </div>
+      <div class="panel-content" id="account-panel-content">
+        <!-- Content filled by JS -->
+      </div>
+    </div>
+    <div id="accountOverlay" style="position:fixed;top:0;left:0;width:100vw;height:100vh;display:none;background:rgba(0,0,0,0.3);z-index:1500;"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span>Samsung Compare</span>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#compare">Compare</a></li>
+                <li id="reviews-nav-li"><a href="#reviews">Reviews</a></li>
+                <li id="profile-nav-li" style="display:none;"><a href="#profile">Profile</a></li>
+                <li id="orders-nav-li"><a href="#orders">Orders</a></li>
+                <li><a href="#cart" id="cart-nav-link">Cart</a></li>
+                <li><a href="#contact" id="contact-nav-link">Contact</a></li>
+                <li id="login-nav-li"><a href="#" id="login-nav-link">Login</a></li>
+                <li id="signup-nav-li"><a href="#" id="signup-nav-link">Sign Up</a></li>
+                <li id="logout-nav-li" style="display:none;"><a href="#" id="logout-nav-link">Logout</a></li>
+            </ul>
+            <div id="user-greeting" style="margin-left:1rem;color:#fff;font-weight:600;display:none;"></div>
+            <a href="#account" aria-label="My Account" id="accountLink" style="margin-left:18px;">
+                <svg class="account-icon" viewBox="0 0 24 24" width="22" height="22" fill="#1a73e8">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M12 14c-4 0-7 2-7 4v2h14v-2c0-2-3-4-7-4z"/>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <section id="home" class="section active">
+        <div class="hero">
+            <img style="border-radius: 100px;" src="https://cdn.dribbble.com/users/954572/screenshots/20225943/media/4a8c0bf9dc44f38066221e6710701a78.gif" height="400px" width="1050px">
+            <h1>Compare Samsung Phones</h1>
+            <p>Find the perfect device that matches your needs and budget</p>
+            <a href="#compare" class="cta-button">Start Comparing</a>
+        </div>
+        <div class="features">
+            <div class="feature-card">
+                <h3>Latest Models</h3>
+                <p>Compare the newest Samsung phones with detailed specifications</p>
+            </div>
+            <div class="feature-card">
+                <h3>Quick Comparison</h3>
+                <p>Easy side-by-side comparison of multiple devices</p>
+            </div>
+            <div class="feature-card">
+                <h3>Expert Reviews</h3>
+                <p>Get insights from our expert reviews</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="section">
+        <h2>Samsung Phones</h2>
+        <div class="products-grid" id="products-container"></div>
+    </section>
+
+    <section id="compare" class="section">
+        <h2>Compare Phones</h2>
+        <div class="compare-container">
+            <div class="phone-selector">
+                <select id="phone-select">
+                    <option value="">Select a phone to compare</option>
+                </select>
+                <button id="add-to-compare" class="cta-button">Add to Compare</button>
+            </div>
+            <div id="comparison-table" class="comparison-table"></div>
+        </div>
+    </section>
+
+    <!-- Profile section: dynamically loaded -->
+    <section id="profile" class="section">
+        <h2>User Profile</h2>
+        <div class="form-container" id="profile-container">
+            <!-- Profile info loaded by JS -->
+        </div>
+    </section>
+
+    <section id="orders" class="section">
+        <h2>Order History</h2>
+        <div class="form-container">
+            <div id="orders-table"></div>
+        </div>
+    </section>
+
+    <section id="cart" class="section">
+        <h2>Shopping Cart</h2>
+        <div class="cart-container">
+            <div id="cart-items"></div>
+            <div class="cart-total">
+                Total: <span id="cart-total-amount">$0.00</span>
+            </div>
+            <button class="cta-button" id="checkout-btn">Proceed to Checkout</button>
+            <div id="cart-checkout-msg" style="margin-top:0.5rem;"></div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div class="form-container">
+            <form id="contact-form">
+                <div class="form-group">
+                    <label for="contact-name">Name</label>
+                    <input type="text" id="contact-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-email">Email</label>
+                    <input type="email" id="contact-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-message">Message</label>
+                    <textarea id="contact-message" name="message" required></textarea>
+                </div>
+                <button type="submit" class="cta-button">Send Message</button>
+                <div id="contact-msg" style="margin-top:0.5rem;"></div>
+            </form>
+        </div>
+        <div class="contact-info">
+            <div class="info-item">
+                <div>
+                    <h4>Phone</h4>
+                    <p>+1 (555) 123-4567</p>
+                </div>
+            </div>
+            <div class="info-item">
+                <div>
+                    <h4>Email</h4>
+                    <p>support@samsungcompare.com</p>
+                </div>
+            </div>
+            <div class="info-item">
+                <div>
+                    <h4>Address</h4>
+                    <p>123 Tech Street, Silicon Valley, CA 94025</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Reviews Section after Profile Section -->
+    <section id="reviews" class="section">
+        <h2>Reviews</h2>
+        <div style="display:flex;gap:2rem;flex-wrap:wrap;">
+            <!-- Left: Review Form -->
+            <div style="flex:1;min-width:320px;">
+                <div class="form-container">
+                    <form id="review-form">
+                        <div class="form-group">
+                            <label for="review-rating">Rating</label>
+                            <select id="review-rating" name="rating" required>
+                                <option value="">Select</option>
+                                <option value="good">Good</option>
+                                <option value="poor">Poor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="review-comment">Comment</label>
+                            <textarea id="review-comment" name="comment" required></textarea>
+                        </div>
+                        <button type="submit" class="cta-button">Submit Review</button>
+                        <div id="review-msg" style="margin-top:0.5rem;"></div>
+                    </form>
+                </div>
+            </div>
+            <!-- Right: Reviews History -->
+            <div style="flex:1;min-width:320px;">
+                <div class="form-container" style="max-height:420px;overflow-y:auto;">
+                    <h3 style="margin-bottom:1rem;">Recent Reviews</h3>
+                    <div id="reviews-list"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-body-tertiary text-center">
+        <div class="container p-4"></div>
+        <div class="text-center p-3"></div>
+            "Discover the innovation of Samsung mobile phones. Offering advanced technology, stunning displays, powerful performance for all your smartphone, from budget to premium."
+            © 2024 Copyright:
+            <a class="text-body" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+        </div>
+    </footer>
+
+    <script>
+        // Declare globals
+        let currentUser = null;
+        let currentUserId = null;
+        let accountPanelState = "choice";
+
+        const phones = [
+            {
+                id: 1,
+                model: "Samsung Galaxy S24 Ultra",
+                image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=800&q=80",
+                price: "$1,199",
+                specs: {
+                    display: "6.8\" Dynamic AMOLED 2X",
+                    processor: "Snapdragon 8 Gen 3",
+                    camera: "200MP + 12MP + 50MP + 10MP",
+                    battery: "5000mAh",
+                    size: "162.3 x 79 x 8.9 mm",
+                    weight: "233g",
+                    color: "Phantom Black",
+                    frequency: "120Hz",
+                    rating: "4.8/5",
+                    extraFeatures: "S Pen, IP68 water resistance"
+                }
+            },
+            {
+                id: 2,
+                model: "Samsung Galaxy S24+",
+                image: "https://images.unsplash.com/photo-1610945264803-c22b62d2a7b3?auto=format&fit=crop&w=800&q=80",
+                price: "$999",
+                specs: {
+                    display: "6.7\" Dynamic AMOLED 2X",
+                    processor: "Snapdragon 8 Gen 3",
+                    camera: "50MP + 12MP + 10MP",
+                    battery: "4900mAh",
+                    size: "158.5 x 75.9 x 8.2 mm",
+                    weight: "196g",
+                    color: "Phantom Black",
+                    frequency: "120Hz",
+                    rating: "4.6/5",
+                    extraFeatures: "Wireless charging, IP68 water resistance"
+                }
+            },
+            {
+                id: 3,
+                model: "Samsung Galaxy Z Fold5",
+                image: "https://images.unsplash.com/photo-1678911820864-e2c567c655d7?auto=format&fit=crop&w=800&q=80",
+                price: "$1,799",
+                specs: {
+                    display: "7.6\" Dynamic AMOLED 2X",
+                    processor: "Snapdragon 8 Gen 2",
+                    camera: "50MP + 12MP + 10MP",
+                    battery: "4400mAh",
+                    size: "155.1 x 130.1 x 6.1 mm (unfolded)",
+                    weight: "253g",
+                    color: "Icy Blue",
+                    frequency: "120Hz",
+                    rating: "4.7/5",
+                    extraFeatures: "Foldable display, IPX8 water resistance"
+                }
+            }
+        ];
+
+        let cart = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const sections = document.querySelectorAll('.section');
+
+            function navigateToSection(sectionId) {
+                // Hide all sections
+                sections.forEach(section => section.classList.remove('active'));
+                // Remove active from all nav links
+                navLinks.forEach(link => link.classList.remove('active'));
+                // Show only the selected section
+                const targetSection = document.getElementById(sectionId);
+                const targetLink = document.querySelector(`[href="#${sectionId}"]`);
+                if (targetSection) targetSection.classList.add('active');
+                if (targetLink) targetLink.classList.add('active');
+                // Only load reviews when reviews section is shown
+                if (sectionId === 'reviews') {
+                    loadReviews();
+                }
+                if (sectionId === 'orders') {
+                    loadOrders();
+                }
+                if (sectionId === 'cart') {
+                    updateCart();
+                }
+                if (sectionId === 'profile') {
+                    loadProfileSection();
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = link.getAttribute('href').substring(1);
+                    navigateToSection(sectionId);
+                });
+            });
+
+            // Initialize with home section
+            navigateToSection('home');
+        });
+
+        // Products Section
+        const productsContainer = document.getElementById('products-container');
+        function createPhoneCard(phone) {
+            const card = document.createElement('div');
+            card.className = 'phone-card';
+            card.innerHTML = `
+                <img src="${phone.image}" alt="${phone.model}">
+                <div class="phone-info">
+                    <h3>${phone.model}</h3>
+                    <p class="phone-price">${phone.price}</p>
+                    <ul class="specs-list">
+                        <li><span>Display:</span> <span>${phone.specs.display}</span></li>
+                        <li><span>Processor:</span> <span>${phone.specs.processor}</span></li>
+                        <li><span>Camera:</span> <span>${phone.specs.camera}</span></li>
+                        <li><span>Battery:</span> <span>${phone.specs.battery}</span></li>
+                        <li><span>Rating:</span> <span>${phone.specs.rating}</span></li>
+                    </ul>
+                    <button class="cta-button" onclick="addToCart(${phone.id})">Add to Cart</button>
+                    <button class="cta-button" onclick="addToCompare(${phone.id})">Compare</button>
+                </div>
+            `;
+            return card;
+        }
+        phones.forEach(phone => {
+            productsContainer.appendChild(createPhoneCard(phone));
+        });
+
+        // Compare Section
+        const phoneSelect = document.getElementById('phone-select');
+        const comparisonTable = document.getElementById('comparison-table');
+        let selectedPhones = [];
+
+        phones.forEach(phone => {
+            const option = document.createElement('option');
+            option.value = phone.id;
+            option.textContent = phone.model;
+            phoneSelect.appendChild(option);
+        });
+
+        // Add to compare from dropdown
+        document.getElementById('add-to-compare').onclick = function() {
+            const phoneId = parseInt(phoneSelect.value);
+            if (!phoneId) return;
+            window.addToCompare(phoneId);
+        };
+
+        window.addToCompare = function(phoneId) {
+            const phone = phones.find(p => p.id === phoneId);
+            if (phone && selectedPhones.length < 3 && !selectedPhones.find(p => p.id === phoneId)) {
+                selectedPhones.push(phone);
+                updateComparisonTable();
+                document.querySelector('[href="#compare"]').click();
+            }
+        };
+
+        function updateComparisonTable() {
+            if (selectedPhones.length === 0) {
+                comparisonTable.innerHTML = '<p>Select phones to compare</p>';
+                return;
+            }
+
+            let html = `
+                <table>
+                    <tr>
+                        <th>Feature</th>
+                        ${selectedPhones.map(phone => `
+                            <th>
+                                ${phone.model}
+                                <button onclick="removeFromCompare(${phone.id})">&times;</button>
+                            </th>
+                        `).join('')}
+                    </tr>
+                    <tr><td>Price</td>${selectedPhones.map(phone => `<td>${phone.price}</td>`).join('')}</tr>
+                    <tr><td>Display</td>${selectedPhones.map(phone => `<td>${phone.specs.display}</td>`).join('')}</tr>
+                    <tr><td>Processor</td>${selectedPhones.map(phone => `<td>${phone.specs.processor}</td>`).join('')}</tr>
+                    <tr><td>Camera</td>${selectedPhones.map(phone => `<td>${phone.specs.camera}</td>`).join('')}</tr>
+                    <tr><td>Battery</td>${selectedPhones.map(phone => `<td>${phone.specs.battery}</td>`).join('')}</tr>
+                </table>
+            `;
+            comparisonTable.innerHTML = html;
+        }
+
+        window.removeFromCompare = function(phoneId) {
+            selectedPhones = selectedPhones.filter(phone => phone.id !== phoneId);
+            updateComparisonTable();
+        };
+
+        // --- CART LOGIC (AJAX, DB-backed) ---
+        function updateCart() {
+            if (!currentUser) {
+                document.getElementById('cart-items').innerHTML = `<div style="color:red;text-align:center;">Please login to view your cart.</div>`;
+                document.getElementById('cart-total-amount').textContent = '$0.00';
+                return;
+            }
+            fetch('cart.php').then(r=>r.json()).then(data=>{
+                if(data.success){
+                    let total = 0;
+                    const cartItems = data.cart.map(item => {
+                        const phone = phones.find(p => p.id == item.product_id);
+                        if (!phone) return '';
+                        const price = parseFloat(phone.price.replace('$','').replace(',',''));
+                        total += price * item.quantity;
+                        return `
+                            <div class="cart-item">
+                                <img src="${phone.image}" alt="${phone.model}">
+                                <div class="cart-item-info">
+                                    <h3>${phone.model}</h3>
+                                    <p>${phone.price} x ${item.quantity}</p>
+                                </div>
+                                <button class="cta-button" onclick="removeFromCart(${phone.id});return false;">Remove</button>
+                            </div>
+                        `;
+                    }).join('');
+                    document.getElementById('cart-items').innerHTML = cartItems || '<div style="text-align:center;">Cart is empty.</div>';
+                    document.getElementById('cart-total-amount').textContent = `$${total.toFixed(2)}`;
+                }
+            });
+        }
+
+        window.addToCart = function(phoneId) {
+            if (!currentUser) {
+                // Open account panel and show login form
+                accountPanelState = "login";
+                openAccountPanel();
+                return;
+            }
+            fetch('cart.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({action:'add', product_id: phoneId, quantity:1})
+            }).then(r=>r.json()).then(data=>{
+                if(data.success){
+                    updateCart();
+                    alert('Added to cart!');
+                }
+            });
+        };
+
+        window.removeFromCart = function(phoneId) {
+            if (!currentUser) {
+                alert('Please login.');
+                return;
+            }
+            fetch('cart.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({action:'remove', product_id: phoneId})
+            }).then(r=>r.json()).then(data=>{
+                if(data.success){
+                    updateCart();
+                }
+            });
+        };
+
+        document.getElementById('checkout-btn').onclick = function(e) {
+            e.preventDefault();
+            if (!currentUser) {
+                alert('Please login to checkout.');
+                return;
+            }
+            const totalText = document.getElementById('cart-total-amount').textContent.replace('$','').replace(',','');
+            const totalAmount = parseFloat(totalText) || 0;
+            if (totalAmount === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            fetch('cart.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({action:'checkout', totalAmount: totalAmount})
+            })
+            .then(r => r.json())
+            .then(data => {
+                const msgDiv = document.getElementById('cart-checkout-msg');
+                if(data.success){
+                    updateCart();
+                    msgDiv.style.color = 'green';
+                    msgDiv.textContent = 'Order placed successfully!';
+                    loadOrders();
+                } else {
+                    msgDiv.style.color = 'red';
+                    msgDiv.textContent = data.msg || 'Checkout failed';
+                }
+                setTimeout(()=>{msgDiv.textContent='';}, 2500);
+            });
+        };
+
+        // --- CONTACT FORM LOGIC ---
+        document.getElementById('contact-form').onsubmit = async function(e){
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+            const message = document.getElementById('contact-message').value.trim();
+            const msgDiv = document.getElementById('contact-msg');
+            if (!name || !email || !message) {
+                msgDiv.style.color = 'red';
+                msgDiv.textContent = 'All fields are required.';
+                return;
+            }
+            const fd = new FormData();
+            fd.append('name', name);
+            fd.append('email', email);
+            fd.append('message', message);
+            // Always use fetch, never let form submit
+            const res = await fetch('contact.php', {method:'POST',body:fd});
+            let data;
+            try { data = await res.json(); } catch { data = {success:false,msg:'Server error'}; }
+            msgDiv.style.color = data.success ? 'green' : 'red';
+            msgDiv.textContent = data.msg || (data.success ? 'Message sent!' : 'Failed to send');
+            if(data.success) this.reset();
+        };
+
+        // --- REVIEWS SECTION LOGIC ---
+        function loadReviews() {
+            fetch('reviews.php')
+                .then(r => r.json())
+                .then(data => {
+                    const reviewsList = document.getElementById('reviews-list');
+                    if (!data.success || !Array.isArray(data.reviews)) {
+                        reviewsList.innerHTML = '<div style="color:red;">Failed to load reviews.</div>';
+                        return;
+                    }
+                    if (data.reviews.length === 0) {
+                        reviewsList.innerHTML = '<div>No reviews yet.</div>';
+                        return;
+                    }
+                    reviewsList.innerHTML = data.reviews.map(r => `
+                        <div style="border-bottom:1px solid #eee;padding:0.5rem 0;">
+                            <div style="font-weight:600;color:#1a73e8;">${r.name || 'Anonymous'}</div>
+                            <div style="font-size:0.95em;color:#555;">${r.rating === 'good' ? '👍 Good' : '👎 Poor'}</div>
+                            <div style="margin:0.5em 0;">${r.comment}</div>
+                            <div style="font-size:0.8em;color:#888;">${r.created_at}</div>
+                        </div>
+                    `).join('');
+                });
+        }
+        document.getElementById('review-form').onsubmit = async function(e){
+            e.preventDefault();
+            const fd = new FormData(this);
+            const msgDiv = document.getElementById('review-msg');
+            msgDiv.textContent = '';
+            let data;
+            try {
+                const res = await fetch('reviews.php', {method:'POST', body:fd});
+                data = await res.json();
+            } catch {
+                data = {success:false, msg:'Server error'};
+            }
+            msgDiv.style.color = data.success ? 'green' : 'red';
+            msgDiv.textContent = data.msg || (data.success ? 'Review submitted!' : 'Failed to submit');
+            if(data.success) {
+                this.reset();
+                loadReviews();
+            }
+        };
+
+        // Prevent default for all forms to avoid accidental page reloads
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e){
+                // Only prevent if not already handled above
+                if (form.id !== 'contact-form' && form.id !== 'review-form') {
+                    e.preventDefault();
+                }
+            });
+        });
+
+        // --- ACCOUNT PANEL LOGIC ---
+        function renderAccountPanel() {
+            const panel = document.getElementById('account-panel-content');
+            if (!currentUser) {
+                if (accountPanelState === "choice") {
+                    panel.innerHTML = `
+                        <button id="show-login-form" class="cta-button" style="width:100%;margin-bottom:1rem;">Login</button>
+                        <button id="show-signup-form" class="cta-button" style="width:100%;">Sign Up</button>
+                    `;
+                    document.getElementById('show-login-form').onclick = function() {
+                        accountPanelState = "login";
+                        renderAccountPanel();
+                    };
+                    document.getElementById('show-signup-form').onclick = function() {
+                        accountPanelState = "signup";
+                        renderAccountPanel();
+                    };
+                } else if (accountPanelState === "login") {
+                    panel.innerHTML = `
+                        <form id="account-login-form" style="margin-bottom:1.5rem;">
+                            <h3 style="margin-bottom:1rem;">Login</h3>
+                            <input type="email" name="email" placeholder="Email" required style="width:100%;margin-bottom:10px;padding:8px;">
+                            <input type="password" name="password" placeholder="Password" required style="width:100%;margin-bottom:10px;padding:8px;">
+                            <button type="submit" class="cta-button" style="width:100%;">Login</button>
+                            <button type="button" id="back-to-choice-login" class="cta-button" style="width:100%;margin-top:10px;background:#eee;color:#1a73e8;">Back</button>
+                            <div id="account-login-error" style="color:red;margin-top:0.5rem;"></div>
+                        </form>
+                    `;
+                    document.getElementById('account-login-form').onsubmit = async function(e){
+                        e.preventDefault();
+                        const fd = new FormData(this);
+                        const res = await fetch('login.php', {method:'POST',body:fd});
+                        const data = await res.json();
+                        if(data.success){
+                            setUser(data.name, data.id);
+                            closeAccountPanel();
+                        }else{
+                            document.getElementById('account-login-error').textContent = data.msg || 'Login failed';
+                        }
+                    };
+                    document.getElementById('back-to-choice-login').onclick = function() {
+                        accountPanelState = "choice";
+                        renderAccountPanel();
+                    };
+                } else if (accountPanelState === "signup") {
+                    panel.innerHTML = `
+                        <form id="account-signup-form">
+                            <h3 style="margin-bottom:1rem;">Sign Up</h3>
+                            <input type="text" name="name" placeholder="Name" required style="width:100%;margin-bottom:10px;padding:8px;">
+                            <input type="email" name="email" placeholder="Email" required style="width:100%;margin-bottom:10px;padding:8px;">
+                            <input type="password" name="password" placeholder="Password" required style="width:100%;margin-bottom:10px;padding:8px;">
+                            <input type="text" name="phone" placeholder="Phone" style="width:100%;margin-bottom:10px;padding:8px;">
+                            <button type="submit" class="cta-button" style="width:100%;">Sign Up</button>
+                            <button type="button" id="back-to-choice-signup" class="cta-button" style="width:100%;margin-top:10px;background:#eee;color:#1a73e8;">Back</button>
+                            <div id="account-signup-error" style="color:red;margin-top:0.5rem;"></div>
+                        </form>
+                    `;
+                    document.getElementById('account-signup-form').onsubmit = async function(e){
+                        e.preventDefault();
+                        const fd = new FormData(this);
+                        let data;
+                        try {
+                            const res = await fetch('signup.php', {method:'POST',body:fd});
+                            data = await res.json();
+                        } catch (err) {
+                            data = {success:false, msg:'Already Used Email Or Username'};
+                        }
+                        const errorDiv = document.getElementById('account-signup-error');
+                        if(data.success){
+                            errorDiv.style.color = 'green';
+                            errorDiv.textContent = 'Registration successful! Please login.';
+                            this.reset();
+                        }else{
+                            errorDiv.style.color = 'red';
+                            errorDiv.textContent = data.msg || 'Signup failed';
+                        }
+                    };
+                    document.getElementById('back-to-choice-signup').onclick = function() {
+                        accountPanelState = "choice";
+                        renderAccountPanel();
+                    };
+                }
+            } else {
+                fetch('profile.php').then(r=>r.json()).then(data=>{
+                    if(data.success){
+                        panel.innerHTML = `
+                            <div style="text-align:center;margin-bottom:18px;">
+                                <div style="display:flex;align-items:center;justify-content:center;margin-bottom:8px;">
+                                    <div style="width:40px;height:40px;border-radius:50%;background:#1a73e8;display:flex;align-items:center;justify-content:center;margin-right:10px;">
+                                        <svg viewBox="0 0 24 24" width="26" height="26" fill="#fff">
+                                            <circle cx="12" cy="8" r="4"/>
+                                            <path d="M12 14c-4 0-7 2-7 4v2h14v-2c0-2-3-4-7-4z"/>
+                                        </svg>
+                                    </div>
+                                    <span style="font-size:1.1rem;font-weight:600;color:#1a73e8;">${data.name}</span>
+                                </div>
+                                <span style="font-size:0.95em;color:#00796b;">Logged in</span>
+                            </div>
+                            <form id="account-profile-form">
+                                <h3 style="margin-bottom:1rem;">Edit Profile</h3>
+                                <input type="text" name="name" value="${data.name}" placeholder="Name" required style="width:100%;margin-bottom:10px;padding:8px;">
+                                <input type="email" name="email" value="${data.email}" placeholder="Email" required style="width:100%;margin-bottom:10px;padding:8px;">
+                                <input type="text" name="phone" value="${data.phone||''}" placeholder="Phone" style="width:100%;margin-bottom:10px;padding:8px;">
+                                <button type="submit" class="cta-button" style="width:100%;">Save Changes</button>
+                                <div id="account-profile-msg" style="color:green;margin-top:0.5rem;"></div>
+                            </form>
+                            <button id="account-logout-btn" class="cta-button" style="margin-top:10px;width:100%;">Logout</button>
+                        `;
+                        document.getElementById('account-profile-form').onsubmit = async function(e){
+                            e.preventDefault();
+                            const fd = new FormData(this);
+                            const res = await fetch('profile.php', {method:'POST',body:fd});
+                            const resp = await res.json();
+                            if(resp.success){
+                                document.getElementById('account-profile-msg').textContent = 'Profile updated!';
+                                setUser(fd.get('name'), currentUserId);
+                                loadProfileSection();
+                            }else{
+                                document.getElementById('account-profile-msg').style.color = 'red';
+                                document.getElementById('account-profile-msg').textContent = resp.msg || 'Update failed';
+                            }
+                        };
+                        document.getElementById('account-logout-btn').onclick = async function(){
+                            await fetch('logout.php');
+                            setUser(null, null);
+                            closeAccountPanel();
+                        };
+                    }
+                });
+            }
+        }
+
+        function openAccountPanel() {
+            document.getElementById('accountPanel').style.right = '0';
+            document.getElementById('accountOverlay').style.display = 'block';
+            accountPanelState = "choice";
+            renderAccountPanel();
+        }
+        function closeAccountPanel() {
+            document.getElementById('accountPanel').style.right = '-300px';
+            document.getElementById('accountOverlay').style.display = 'none';
+        }
+        document.getElementById('accountLink').onclick = function(e){
+            e.preventDefault();
+            openAccountPanel();
+        };
+        document.getElementById('closeAccount').onclick = closeAccountPanel;
+        document.getElementById('accountOverlay').onclick = closeAccountPanel;
+
+        // Set user state and update nav
+        function setUser(name, id){
+            currentUser = name;
+            currentUserId = id;
+            document.getElementById('user-greeting').style.display = name ? 'block' : 'none';
+            document.getElementById('user-greeting').textContent = name ? `Hello, ${name}!` : '';
+            document.getElementById('login-nav-li').style.display = name ? 'none' : '';
+            document.getElementById('signup-nav-li').style.display = name ? 'none' : '';
+            document.getElementById('logout-nav-li').style.display = name ? '' : 'none';
+            document.getElementById('profile-nav-li').style.display = name ? '' : 'none';
+            document.getElementById('orders-nav-li').style.display = name ? '' : 'none';
+            // Only update cart/profile if section is visible
+            if (document.getElementById('profile').classList.contains('active')) {
+                loadProfileSection();
+            }
+            if (document.getElementById('cart').classList.contains('active')) {
+                updateCart();
+            }
+        }
+
+        // On load, check session
+        fetch('profile.php').then(r=>r.json()).then(data=>{
+            if(data.success && data.name){
+                setUser(data.name, data.id);
+            }else{
+                setUser(null, null);
+            }
+        });
+
+        // --- PROFILE SECTION LOGIC ---
+        function loadProfileSection() {
+            const container = document.getElementById('profile-container');
+            if (!currentUser) {
+                container.innerHTML = `<div style="color:red;text-align:center;">Please login to view your profile.</div>`;
+                return;
+            }
+            fetch('profile.php').then(r => r.json()).then(data=>{
+                if(data.success){
+                    container.innerHTML = `
+                        <form id="profile-edit-form">
+                            <div class="form-group">
+                                <label for="profile-name">Name</label>
+                                <input type="text" id="profile-name" name="name" value="${data.name}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-email">Email</label>
+                                <input type="email" id="profile-email" name="email" value="${data.email}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-phone">Phone</label>
+                                <input type="text" id="profile-phone" name="phone" value="${data.phone||''}">
+                            </div>
+                            <button type="submit" class="cta-button">Save Changes</button>
+                            <div id="profile-edit-msg" style="color:green;margin-top:0.5rem;"></div>
+                        </form>
+                    `;
+                    document.getElementById('profile-edit-form').onsubmit = async function(e){
+                        e.preventDefault();
+                        const fd = new FormData(this);
+                        const res = await fetch('profile.php', {method:'POST',body:fd});
+                        const resp = await res.json();
+                        if(resp.success){
+                            document.getElementById('profile-edit-msg').textContent = 'Profile updated!';
+                            setUser(fd.get('name'), currentUserId);
+                        }else{
+                            document.getElementById('profile-edit-msg').style.color = 'red';
+                            document.getElementById('profile-edit-msg').textContent = resp.msg || 'Update failed';
+                        }
+                    };
+                }
+            });
+        }
+
+        // --- ORDERS HISTORY LOGIC ---
+        function loadOrders() {
+            if (!currentUser) {
+                document.getElementById('orders-table').innerHTML = `<div style="color:red;text-align:center;">Please login to view your orders.</div>`;
+                return;
+            }
+            fetch('orders.php')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success && Array.isArray(data.orders) && data.orders.length > 0) {
+                        let html = `<table style="width:100%;border-collapse:collapse;">
+                            <tr>
+                                <th style="background:#1a73e8;color:#fff;padding:8px;">Order ID</th>
+                                <th style="background:#1a73e8;color:#fff;padding:8px;">Date</th>
+                                <th style="background:#1a73e8;color:#fff;padding:8px;">Total</th>
+                                <th style="background:#1a73e8;color:#fff;padding:8px;">Items</th>
+                            </tr>`;
+                        data.orders.forEach(order => {
+                            html += `<tr>
+                                <td style="padding:8px;border-bottom:1px solid #eee;">${order.order_id}</td>
+                                <td style="padding:8px;border-bottom:1px solid #eee;">${order.orderDate || ''}</td>
+                                <td style="padding:8px;border-bottom:1px solid #eee;">$${parseFloat(order.totalAmount).toFixed(2)}</td>
+                                <td style="padding:8px;border-bottom:1px solid #eee;">${order.items || ''}</td>
+                            </tr>`;
+                        });
+                        html += `</table>`;
+                        document.getElementById('orders-table').innerHTML = html;
+                    } else {
+                        document.getElementById('orders-table').innerHTML = `<div style="text-align:center;">No orders found.</div>`;
+                    }
+                });
+        }
+
+        // Make Login and Sign Up nav links open account panel with correct form
+        document.getElementById('login-nav-link').onclick = function(e) {
+            e.preventDefault();
+            accountPanelState = "login";
+            openAccountPanel();
+        };
+        document.getElementById('signup-nav-link').onclick = function(e) {
+            e.preventDefault();
+            accountPanelState = "signup";
+            openAccountPanel();
+        };
+
+        // Make Logout nav link log out and update UI
+        document.getElementById('logout-nav-link').onclick = async function(e) {
+            e.preventDefault();
+            await fetch('logout.php');
+            setUser(null, null);
+            // Optionally, go to home section after logout
+            document.querySelector('[href="#home"]').click();
+        };
+    </script>
+</body>
+</html>
